@@ -218,60 +218,91 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const guessForm = document.getElementById('guess-form');
-            const guessesTable = document.getElementById('guesses-table');
-            
-            guessForm.addEventListener('submit', function(event) {
-                event.preventDefault();
+    document.addEventListener('DOMContentLoaded', function() {
+        const guessForm = document.getElementById('guess-form');
+        const guessesTable = document.getElementById('guesses-table');
+        const webAppUrl = 'https://script.google.com/macros/s/AKfycbyNA5aVNzweqvkByqWECpf-qhpmNCU4EtZVe1Ly3MSN-bFgWsRdvUthPT4OaizU4OcJEA/exec'; // 
 
-                // Get values from the form
-                const nameInput = document.getElementById('name');
-                const hoursInput = document.getElementById('hours');
-                const minutesInput = document.getElementById('minutes');
-                const secondsInput = document.getElementById('seconds');
+        // Function to fetch and display existing guesses
+        async function fetchGuesses() {
+            try {
+                // You would need a separate script to get all data
+                // For this simple example, we'll just display dummy data initially
+            } catch (error) {
+                console.error('Error fetching guesses:', error);
+            }
+        }
+        
+        // Load initial guesses when the page loads
+        fetchGuesses();
 
-                const name = nameInput.value.trim();
-                // Pad numbers to ensure two digits e.g., 5 becomes 05
-                const hours = String(hoursInput.value).padStart(2, '0');
-                const minutes = String(minutesInput.value).padStart(2, '0');
-                const seconds = String(secondsInput.value).padStart(2, '0');
+        guessForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
 
-                if (!name) {
-                    // A simple validation alert. In a real app, you'd use a more elegant UI element.
-                    alert("Please enter your name.");
-                    return;
+            const nameInput = document.getElementById('name');
+            const hoursInput = document.getElementById('hours');
+            const minutesInput = document.getElementById('minutes');
+            const secondsInput = document.getElementById('seconds');
+
+            const name = nameInput.value.trim();
+            const hours = String(hoursInput.value).padStart(2, '0');
+            const minutes = String(minutesInput.value).padStart(2, '0');
+            const seconds = String(secondsInput.value).padStart(2, '0');
+
+            if (!name) {
+                alert("Please enter your name.");
+                return;
+            }
+
+            const formattedTime = `${hours}:${minutes}:${seconds}`;
+
+            const data = {
+                name: name,
+                time: formattedTime
+            };
+
+            try {
+                const response = await fetch(webAppUrl, {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    // Create new table row
+                    const newRow = document.createElement('tr');
+                    newRow.classList.add('border-t', 'border-slate-200', 'new-row');
+                    
+                    newRow.innerHTML = `
+                        <td class="p-4 font-medium">${escapeHTML(name)}</td>
+                        <td class="p-4 font-mono">${escapeHTML(formattedTime)}</td>
+                        <td class="p-4 font-mono text-right text-slate-500">--:--:--</td>
+                    `;
+
+                    // Add the new row to the top of the table
+                    guessesTable.prepend(newRow);
+
+                    // Reset the form
+                    guessForm.reset();
+                    nameInput.focus();
+                } else {
+                    alert("Submission failed. Please try again.");
                 }
-
-                const formattedTime = `${hours}:${minutes}:${seconds}`;
-
-                // Create new table row
-                const newRow = document.createElement('tr');
-                newRow.classList.add('border-t', 'border-slate-200', 'new-row');
-                
-                newRow.innerHTML = `
-                    <td class="p-4 font-medium">${escapeHTML(name)}</td>
-                    <td class="p-4 font-mono">${escapeHTML(formattedTime)}</td>
-                    <td class="p-4 font-mono text-right text-slate-500">--:--:--</td>
-                `;
-
-                // Add the new row to the table
-                guessesTable.appendChild(newRow);
-
-                // Reset the form
-                guessForm.reset();
-                nameInput.focus();
-            });
-            
-            // A simple function to prevent HTML injection
-            function escapeHTML(str) {
-                const div = document.createElement('div');
-                div.appendChild(document.createTextNode(str));
-                return div.innerHTML;
+            } catch (error) {
+                console.error('Error:', error);
+                alert("An error occurred. Please check the console.");
             }
         });
-    </script>
+        
+        function escapeHTML(str) {
+            const div = document.createElement('div');
+            div.appendChild(document.createTextNode(str));
+            return div.innerHTML;
+        }
+    });
+</script>
 </body>
 </html>
-
 
