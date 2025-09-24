@@ -166,7 +166,13 @@
                                 <input type="number" name="seconds" id="seconds" placeholder="S" min="0" max="59" required class="w-full p-3 border border-slate-300 rounded-lg text-center focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                             </div>
                         </div>
-                        <button type="submit" class="w-full mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-transform duration-200 hover:scale-105">Submit My Guess</button>
+			<div id="loading-message" class="hidden text-center text-slate-500 my-4">
+    				Submitting your guess... Please wait.
+			</div>
+
+				<button type="submit" id="submit-button" class="w-full mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-transform duration-200 hover:scale-105">Submit My Guess</button>
+
+
                     </form>
                 </div>
             </section>
@@ -238,6 +244,10 @@
             guessForm.addEventListener('submit', async function(event) {
                 event.preventDefault();
 
+		// Get the loading message and button elements
+    		const loadingMessage = document.getElementById('loading-message');
+    		const submitButton = document.getElementById('submit-button');
+
                 const nameInput = document.getElementById('name');
                 const hoursInput = document.getElementById('hours');
                 const minutesInput = document.getElementById('minutes');
@@ -259,6 +269,12 @@
                     name: name,
                     time: formattedTime
                 };
+
+    		// Show the loading message and disable the button
+    		loadingMessage.classList.remove('hidden');
+    		submitButton.disabled = true;
+    		submitButton.classList.remove('bg-green-600', 'hover:bg-green-700');
+    		submitButton.classList.add('bg-gray-400');
 
                 try {
                         const response = await fetch(webAppUrl, {
@@ -294,7 +310,6 @@
     </script>
 </body>
 </html>
-
 
 
 
