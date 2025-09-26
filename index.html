@@ -271,7 +271,7 @@
 		animateNumber(potSizeElement, potSize, 1200);
 
 		document.getElementById("potDetails").textContent = 
-    		`${guessCount} guesses so far (£5 per guess)`;
+    		`${guessCount} guesses so far`;
 
 
             renderChart(chartData);
@@ -304,7 +304,7 @@
                 responsive: true,
                 scales: {
                     x: {
-                        title: { display: true, text: 'Guessed Time (Hours)' },
+                        title: { display: true, text: 'Guessed Time (Hours:Mins)' },
                         ticks: {
                             callback: function(value) {
                                 const hours = Math.floor(value / 60);
@@ -422,3 +422,4 @@ function animateNumber(element, target, duration = 1000) {
     </script>
 </body>
 </html>
+
