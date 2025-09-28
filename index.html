@@ -187,47 +187,6 @@
             </section>
 
 
-            <section class="bg-white p-6 rounded-2xl shadow-lg border border-slate-200">
-                <h2 class="text-2xl font-bold mb-4 text-slate-900">Place Your Guess!</h2>
-                <div class="space-y-4">
-                    <div>
-                        <p class="font-semibold mb-2">Step 1: Contribute to the Prize Pot</p>
-                        <a href="https://www.paypal.com/pool/9iAICUM79r" target="_blank" class="w-full flex items-center justify-center gap-3 bg-yellow-400 hover:bg-yellow-500 text-blue-900 font-bold py-3 px-6 rounded-lg transition-transform duration-200 hover:scale-105">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M10.428 15.688c.348.932.604 1.632.768 2.1a.6.6 0 0 1-.528.864H6.336a.6.6 0 0 1-.6-.576c0-.048.012-.108.036-.18.156-.492.528-1.548 1.116-3.18H4.668a.6.6 0 0 1-.6-.648l1.74-10.968a.6.6 0 0 1 .6-.552h4.524c2.544 0 4.14 1.356 3.42 4.08-.432 1.668-1.584 2.604-3.132 2.604h-2.136c-.396 0-.708.204-.84.624ZM15.156 3h4.524a.6.6 0 0 1 .588.6l.96 6.012a.6.6 0 0 1-.588.684h-3.324c-2.544 0-4.14 1.356-3.42 4.08.432 1.668 1.584 2.604 3.132 2.604h.984a.6.6 0 0 1 .588.516l.36 1.836a.6.6 0 0 1-.588.684h-3.9a.6.6 0 0 1-.6-.576c0-.048.012-.108.036-.18.156-.492.528-1.548 1.116-3.18h-2.22c-2.952 0-4.824-2.208-3.792-6.528C9.516 5.604 11.832 3 15.156 3Z"/></svg>
-                            <span>Pay into the Money Pool</span>
-                        </a>
-                        <p class="text-xs text-slate-500 mt-1 text-center">Add £5</p>
-                    </div>
-
-                    <form id="guess-form" method="POST">
-                        <p class="font-semibold mb-2">Step 2: Submit Your Guess</p>
-                        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
-                            <div class="sm:col-span-2">
-                                <label for="name" class="sr-only">Your Name</label>
-                                <input type="text" name="name" id="name" placeholder="Your Name" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            </div>
-                            <div class="col-span-2 sm:col-span-2 flex items-center gap-2">
-                                <label for="hours" class="sr-only">Hours</label>
-                                <input type="number" name="hours" id="hours" placeholder="H" min="0" max="99" required class="w-full p-3 border border-slate-300 rounded-lg text-center focus:ring-2 focus:ring-blue-500 focus:border-blue-500" >
-                                <span class="font-bold text-slate-400">:</span>
-                                <label for="minutes" class="sr-only">Minutes</label>
-                                <input type="number" name="minutes" id="minutes" placeholder="M" min="0" max="59" required class="w-full p-3 border border-slate-300 rounded-lg text-center focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                <span class="font-bold text-slate-400">:</span>
-                                <label for="seconds" class="sr-only">Seconds</label>
-                                <input type="number" name="seconds" id="seconds" placeholder="S" min="0" max="59" required class="w-full p-3 border border-slate-300 rounded-lg text-center focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            </div>
-                        </div>
-			<div id="loading-message" class="hidden text-center text-slate-500 my-4">
-    				Submitting your guess... Please wait.
-			</div>
-
-				<button type="submit" id="submit-button" class="w-full mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-transform duration-200 hover:scale-105">Submit My Guess</button>
-
-
-                    </form>
-                </div>
-            </section>
-            
             <section>
                 <h2 class="text-2xl font-bold mb-4 text-center text-slate-900">Current Guesses</h2>
                 <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-200">
