@@ -243,7 +243,7 @@
         	return h * 60 + m + (s / 60);
             }
 
-               // Function to fetch and display guesses (table + chart)
+               // Function to fetch and display guesses (table + charts)
     async function fetchGuesses() {
         try {
             const response = await fetch(webAppUrl);
@@ -417,7 +417,7 @@ function renderHistogram(chartData) {
             responsive: true,
             scales: {
                 x: {
-                    title: { display: true, text: 'Guessed Time Range (Hours)' },
+
                     ticks: {
         minRotation: 90,
         maxRotation: 90
