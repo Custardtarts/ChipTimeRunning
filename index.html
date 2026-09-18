@@ -293,6 +293,7 @@
             document.getElementById('potDetails').textContent = `${guessCount} guess${  guessCount !== 1 ? 'es' : ''} submitted`;   
 
             renderChart(chartData);
+            renderHistogram(chartData);
         } catch (error) {
             console.error('Error fetching guesses:', error);
             alert("Failed to load guesses. Please try refreshing the page.");
@@ -346,6 +347,105 @@
             }
         });
     }
+    // Histogram rendering
+let histogramChartInstance;
+
+// Helper function to bucket the data into intervals (bins)
+function processHistogramData(chartData, binSizeMinutes = 30) {
+    if (!chartData || chartData.length === 0) return { labels: [], counts: [] };
+
+    // Find the min and max minutes to define our range
+    const values = chartData.map(d => d.x);
+    const min = Math.floor(Math.min(...values) / binSizeMinutes) * binSizeMinutes;
+    const max = Math.ceil(Math.max(...values) / binSizeMinutes) * binSizeMinutes;
+
+    const bins = {};
+    // Initialize all bins in the range with 0 so the chart doesn't skip empty ranges
+    for (let i = min; i <= max; i += binSizeMinutes) {
+        bins[i] = 0;
+    }
+
+    // Count how many guesses fall into each bin
+    chartData.forEach(d => {
+        const bin = Math.floor(d.x / binSizeMinutes) * binSizeMinutes;
+        bins[bin]++;
+    });
+
+    const labels = [];
+    const counts = [];
+    
+    // Format the bins into labels and arrays for Chart.js
+    Object.keys(bins).sort((a, b) => a - b).forEach(binStr => {
+        const bin = parseInt(binStr);
+        counts.push(bins[bin]);
+
+        // Format label as "H:MM - H:MM"
+        const formatTime = (minutes) => {
+            const h = Math.floor(minutes / 60);
+            const m = Math.floor(minutes % 60);
+            return `${h}:${String(m).padStart(2, '0')}`;
+        };
+        labels.push(`${formatTime(bin)} - ${formatTime(bin + binSizeMinutes)}`);
+    });
+
+    return { labels, counts };
+}
+
+function renderHistogram(chartData) {
+    // Make sure you have a canvas with id="histogramChart" in your HTML
+    const ctx = document.getElementById('histogramChart').getContext('2d');
+    if (histogramChartInstance) histogramChartInstance.destroy();
+
+    // Group data into 5 minute bins
+    const binnedData = processHistogramData(chartData, 5);
+
+    histogramChartInstance = new Chart(ctx, {
+        type: 'bar', 
+        data: {
+            labels: binnedData.labels,
+            datasets: [{
+                label: 'Frequency of Guesses',
+                data: binnedData.counts,
+                backgroundColor: 'rgba(37, 99, 235, 0.7)',
+                borderColor: '#ffffff', 
+                borderWidth: 1,
+                barPercentage: 1.0,
+                categoryPercentage: 1.0
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    title: { display: true, text: 'Guessed Time Range (Hours)' },
+                    ticks: {
+        minRotation: 90,
+        maxRotation: 90
+    }
+                },
+                y: {
+                    display: true, 
+                    title: { display: true, text: 'Number of Guesses' },
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1 
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `Guesses: ${context.raw}`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+    
             
             // Load initial guesses when the page loads
             fetchGuesses();
